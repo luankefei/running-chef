@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { OpenIMSDK } from "open-im-sdk";
+// import { OpenIMSDK } from "open-im-sdk";
 
 // We'll use redux-logger just as an example of adding another middleware
 // import logger from "redux-logger";
@@ -26,7 +26,7 @@ export interface IStoreState {
   };
 }
 
-export const openIM = new OpenIMSDK();
+// export const openIM = new OpenIMSDK();
 
 export function makeStore(preloadedState: IStoreState): any {
   const store = configureStore({
