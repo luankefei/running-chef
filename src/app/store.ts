@@ -1,24 +1,69 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
+import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { OpenIMSDK } from "open-im-sdk";
 
-import counterReducer from '../features/counter/counterSlice'
+// We'll use redux-logger just as an example of adding another middleware
+// import logger from "redux-logger";
 
-export function makeStore() {
-  return configureStore({
-    reducer: { counter: counterReducer },
-  })
+import createReducer from "./rootReducer";
+
+export interface IStoreState {
+  chat: {
+    imStatus: boolean;
+    chattingConversation: any;
+    conversationList: any[];
+    lastMinSeq: number;
+    isEnd: boolean;
+    topMessageList: any[];
+    nftList: any[];
+    groupMemberList: any[];
+    panelState: any;
+  };
+  address: {
+    activeUser: any;
+    activeGroup: any;
+    activeItemId: any;
+  };
 }
 
-const store = makeStore()
+export const openIM = new OpenIMSDK();
 
-export type AppState = ReturnType<typeof store.getState>
+export function makeStore(preloadedState: IStoreState): any {
+  const store = configureStore({
+    reducer: createReducer(), // Adding the api middleware enables caching, invalidation, polling,
+    preloadedState,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(),
+  });
+  return store;
+}
 
-export type AppDispatch = typeof store.dispatch
+const store = makeStore({
+  chat: {
+    imStatus: false,
+    chattingConversation: null,
+    conversationList: [],
+    lastMinSeq: 0,
+    isEnd: false,
+    topMessageList: [],
+    nftList: [],
+    groupMemberList: [],
+    panelState: { name: "chat", value: "" },
+  },
+  address: {
+    activeUser: null,
+    activeGroup: null,
+    activeItemId: null,
+  },
+});
 
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  AppState,
-  unknown,
-  Action<string>
->
+// optional, but required for refetchOnFocus/refetchOnReconnect behaviors
+// see `setupListeners` docs - takes an optional callback as the 2nd arg for customization
+setupListeners(store.dispatch);
 
-export default store
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>;
+
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch;
+
+export default store;
