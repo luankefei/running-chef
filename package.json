@@ -1,5 +1,15 @@
 {
+  "name": "running-chef",
+  "version": "0.0.1",
   "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:luankefei/running-chef.git"
+  },
+  "engines": {
+    "node": ">= 18"
+  },
   "scripts": {
     "dev": "next",
     "build": "next build",
