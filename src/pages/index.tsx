@@ -15,7 +15,6 @@ const _fetch = createFetch(fetch, []);
 
 const IndexPage: NextPage = () => {
   useEffect(() => {
-    console.log(_fetch);
     _fetch(api).then((res) => {
       console.log("_fetch data", res);
     });
