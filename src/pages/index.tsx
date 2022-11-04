@@ -1,10 +1,26 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
+import type { NextPage } from "next";
+import Head from "next/head";
+import { useEffect } from "react";
 
-import Counter from '../features/counter/Counter'
-import styles from '../styles/Home.module.css'
+import "cross-fetch/polyfill"; // add universal-fetch polyfill if needed
+import { createFetch } from "../utils/fetch";
+
+import Counter from "../features/counter/Counter";
+import styles from "../styles/Home.module.css";
+import bodify from "src/utils/bodify";
+
+const api = "https://api.genshin.dev/";
+
+const _fetch = createFetch(fetch, []);
 
 const IndexPage: NextPage = () => {
+  useEffect(() => {
+    console.log(_fetch);
+    _fetch(api).then((res) => {
+      console.log("_fetch data", res);
+    });
+  }, []);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -57,7 +73,7 @@ const IndexPage: NextPage = () => {
         </span>
       </header>
     </div>
-  )
-}
+  );
+};
 
-export default IndexPage
+export default IndexPage;

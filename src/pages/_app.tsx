@@ -9,7 +9,6 @@ import store from "@app/store";
 import Layout from "@containers/Layout";
 import AuthProvider from "@contexts/AuthProvider";
 import ErrorBoundary from "@containers/ErrorBoundray";
-// import OpenIMContainer from "@containers/OpenIMContainer";
 
 // styles
 import "../styles/globals.css";
@@ -22,7 +21,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     if (Component.displayName === "Login") return <Component />;
     return (
       <Layout>
-        {/* <OpenIMContainer> */}
         {/* <FetchContext.Provider> */}
         <Component {...pageProps} />
         {/* </FetchContext.Provider> */}
