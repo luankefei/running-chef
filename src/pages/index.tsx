@@ -8,16 +8,28 @@ import { createFetch } from "../utils/fetch";
 import Counter from "../features/counter/Counter";
 import styles from "../styles/Home.module.css";
 import bodify from "src/utils/bodify";
+import response from "src/utils/response";
 
 const api = "https://api.genshin.dev/";
 
-const _fetch = createFetch(fetch, []);
+const _fetch = createFetch(fetch, [bodify()]);
+const request = (...params: any) => {
+  return _fetch(params)
+    .then(response)
+    .catch((err) => {
+      console.log("request error", err);
+    });
+};
 
 const IndexPage: NextPage = () => {
+  const test = async () => {
+    // const res = await _fetch(api);
+    const res = await request(api);
+    console.log("res", res);
+  };
+
   useEffect(() => {
-    _fetch(api).then((res) => {
-      console.log("_fetch data", res);
-    });
+    test();
   }, []);
 
   return (

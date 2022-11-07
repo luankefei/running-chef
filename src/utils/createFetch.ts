@@ -1,3 +1,5 @@
+import response from "./response";
+
 export type Fetch = typeof fetch;
 export type FetchReturn = ReturnType<Fetch>;
 
@@ -57,7 +59,7 @@ type FetchCompose = <FEs extends FetchEnhancer[]>(
 
 // redux 组合中间件数组的方式，通过数组的 reduce 方法，实现执行每一个中间件，强化 dispatch
 const compose =
-  (...funcs: any[]) =>
+  (...funcs: ((...args: any[]) => any)[]) =>
   (arg: Fetch) =>
     funcs.reduceRight((prev, f) => f(prev), arg);
 

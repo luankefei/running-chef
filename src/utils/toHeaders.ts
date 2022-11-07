@@ -6,14 +6,11 @@ type KVObject = Record<string, unknown>;
 const filterNil = (obj: KVObject): any =>
   (getEntries(obj) as string[][]).filter(([, v]) => v != null);
 
-const toHeaders = (headers: HeadersInit | KVObject) => {
-  let params = null;
-  if (headers instanceof Headers) params = headers;
-  else if (Reflect.ownKeys(headers).length > 0)
-    params = filterNil(headers as KVObject);
-  else params = {};
-
-  return new Headers(params);
-};
+const toHeaders = (headers: HeadersInit | KVObject) =>
+  new Headers(
+    headers instanceof Headers
+      ? headers
+      : (headers && filterNil(headers as KVObject)) || {}
+  );
 
 export default toHeaders;
